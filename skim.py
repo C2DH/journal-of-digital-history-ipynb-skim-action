@@ -15,7 +15,6 @@ def main(notebook=None):
       sys.exit(1)
 
     print(f'::debug::Path {notebook_filepath} exists')
-    
     with open(notebook_filepath) as f: 
       data = json.load(f)
       cells = data.get('cells', [])
@@ -23,6 +22,7 @@ def main(notebook=None):
       
       with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'size={len(cells)}', file=fh)
+
 
 if __name__ == "__main__":
     fire.Fire(main)
