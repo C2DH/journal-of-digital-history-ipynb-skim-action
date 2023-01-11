@@ -1,16 +1,16 @@
 # action.yml
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Journal of Digital History'
+description: 'Add convenient tags to make your notebook shine'
 inputs:
-  who-to-greet: # id of input
-    description: 'Who to greet'
+  notebook:
+    description: 'relative path of your notebook ipynb file'
     required: true
-    default: 'World'
+    default: 'main.ipynb'
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  size:
+    description: 'The number of total cells'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.who-to-greet }}
+    - ${{ inputs.notebook }}

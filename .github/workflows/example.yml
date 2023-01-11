@@ -9,7 +9,7 @@ jobs:
         id: hello
         uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
         with:
-          local-notebook-path: 'example/example.ipynb'
+          notebook: 'example/example.ipynb'
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.size }}"
