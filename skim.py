@@ -10,7 +10,8 @@ def save_and_commit_notebook(data, file_name):
     repo = Repo()
     repo.index.add([file_name])
     repo.index.commit("Adding " + file_name + " to the repository")
-
+    origin = repo.remote(name='origin')
+    origin.push()
 
 def main(notebook=None):
     if notebook is None:
