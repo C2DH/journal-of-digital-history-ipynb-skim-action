@@ -9,7 +9,7 @@ def save_and_commit_notebook(data, file_name):
         json.dump(data, f)
     repo = Repo()
     repo.index.add([file_name])
-    repo.index.commit("Adding " + file_name + " to the repository")
+    repo.index.commit("Skim ipynb " + file_name + " added to the repository.")
     origin = repo.remote(name='origin')
     origin.push()
 
@@ -30,6 +30,11 @@ def main(notebook=None):
     with open(notebook_filepath) as f: 
       data = json.load(f)
       cells = data.get('cells', [])
+      for cell in cells:
+        cell['metadata'].update({
+          'tags': [],
+        })
+      data.update({ 'cells': cells })
       print(f"::debug::num of cells: {len(cells)}")
       print(f"::set-output name=size::{30}")
       save_and_commit_notebook(data, skim_filepath)
