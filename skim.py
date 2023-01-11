@@ -1,12 +1,19 @@
 import os
 import sys
+import json
+import fire
 
-def main(path):
-    workspace = os.getenv("GITHUB_WORKSPACE")
-    filepath = f"Hello {path} in {workspace}!"
-
-    print(f"::set-output name=ipynb::{filepath}")
+def main(notebook=None):
+    if notebook is None:
+      print('::error::No path provided')
+      sys.exit(1)
+    if not os.path.exists(notebook):
+      print(f'::error::Path {notebook} does not exist')
+      sys.exit(1)
+    with open(notebook) as f: 
+      data = json.load(f)
+      cells = data.get('cells', [])
+      print(f"::set-output name=size::{len(cells)}")
     
 if __name__ == "__main__":
-    path = sys.argv[1]
-    print(main(path))
+    fire.Fire(main)
