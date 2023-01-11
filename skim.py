@@ -10,6 +10,7 @@ def main(notebook=None):
       sys.exit(1)
     workspace = os.getenv("GITHUB_WORKSPACE", '')
     notebook_filepath = os.path.join(workspace, notebook)
+
     if not os.path.exists(notebook_filepath):
       print(f'::error::Path {notebook_filepath} does not exist')
       sys.exit(1)
@@ -19,10 +20,7 @@ def main(notebook=None):
       data = json.load(f)
       cells = data.get('cells', [])
       print(f"::debug::num of cells: {len(cells)}")
-      
-      with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-        print(f'size={len(cells)}', file=fh)
-
+      print(f"::set-output name=size::{30}")
 
 if __name__ == "__main__":
     fire.Fire(main)
