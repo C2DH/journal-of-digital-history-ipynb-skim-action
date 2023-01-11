@@ -7,10 +7,12 @@ def main(notebook=None):
     if notebook is None:
       print('::error::No path provided')
       sys.exit(1)
-    if not os.path.exists(notebook):
-      print(f'::error::Path {notebook} does not exist')
+    workspace = os.getenv("GITHUB_WORKSPACE", '')
+    notebook_filepath = os.path.join(workspace, notebook)
+    if not os.path.exists(notebook_filepath):
+      print(f'::error::Path {notebook_filepath} does not exist')
       sys.exit(1)
-    with open(notebook) as f: 
+    with open(notebook_filepath) as f: 
       data = json.load(f)
       cells = data.get('cells', [])
       print(f"::set-output name=size::{len(cells)}")
