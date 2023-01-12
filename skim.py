@@ -2,16 +2,11 @@ import os
 import sys
 import json
 import fire
-from git import Repo
 
-def save_and_commit_notebook(data, file_name):
+def save_notebook(data, file_name):
     with open(file_name, 'w') as f:
         json.dump(data, f)
-    repo = Repo()
-    repo.index.add([file_name])
-    repo.index.commit("Skim ipynb " + file_name + " added to the repository.")
-    origin = repo.remote(name='origin')
-    origin.push()
+
 
 def main(notebook=None):
     if notebook is None:
@@ -31,13 +26,17 @@ def main(notebook=None):
       data = json.load(f)
       cells = data.get('cells', [])
       for cell in cells:
+        tags = cell.get('metadata', {}).get('tags', [])
+        if 'test' not in tags:
+          tags.append('test')
+
         cell['metadata'].update({
-          'tags': [],
+          'tags': tags,
         })
       data.update({ 'cells': cells })
       print(f"::debug::num of cells: {len(cells)}")
       print(f"::set-output name=size::{30}")
-      save_and_commit_notebook(data, skim_filepath)
+      save_notebook(data, skim_filepath)
 
 if __name__ == "__main__":
     fire.Fire(main)
