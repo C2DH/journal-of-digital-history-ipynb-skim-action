@@ -29,6 +29,7 @@ runs:
       shell: bash
     - name: Display basic stats
       run: echo "number of cells ${{ steps.skim.outputs.size }}"
+      shell: bash
     - name: commit changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
