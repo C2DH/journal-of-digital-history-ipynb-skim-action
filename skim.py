@@ -2,10 +2,15 @@ import os
 import sys
 import json
 import fire
+import logging 
 
 def save_notebook(data, file_name):
-    with open(file_name, 'w') as f:
-        json.dump(data, f)
+  # Serializing json
+  json_object = json.dumps(data, indent=2)
+
+  with open(file_name, 'w') as f:
+    # write json to f
+    f.write(json_object)
 
 
 def set_action_output(output_name, value) :
@@ -21,6 +26,10 @@ def set_action_output(output_name, value) :
 
 
 def main(notebook=None):
+
+    sys.stdout.write(f'stdout [skim.py] notebook:{notebook}')
+    sys.stdout.write(f'::debug::[skim.py] notebook:{notebook}')
+    logger.info(f'logger [skim.py] notebook:{notebook}')
     if notebook is None:
       print('::error::No path provided')
       sys.exit(1)
@@ -51,4 +60,7 @@ def main(notebook=None):
       save_notebook(data, skim_filepath)
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+    # create the logger object
+    logger = logging.getLogger()
     fire.Fire(main)
