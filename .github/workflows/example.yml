@@ -5,27 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10.7'
-      - name: checkout repo
-        uses: actions/checkout@v3
-      - name: Install Dependencies and run skim
+      - name: Skim example file
         id: hello
-        run: |
-          pip install -r requirements.txt
-          python skim.py example/example.ipynb
-        shell: bash
-      # - name: Hello world action step
-      #   id: hello
-      #   uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
-      #   with:
-      #     notebook: 'example/example.ipynb'
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "number of cells ${{ steps.hello.outputs.size }}"
-      - name: commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
         with:
-          file_pattern: '*.ipynb'
+          notebook: 'example/example.ipynb'
+      # Use the output from the `hello` step
+      - name: Use the output
+        run: echo "number of cells ${{ steps.hello.outputs.size }}"

@@ -1,16 +1,35 @@
 # action.yml
 name: 'Journal of Digital History'
 description: 'Add convenient tags to make your notebook shine'
+
 inputs:
   notebook:
     description: 'relative path of your notebook ipynb file'
     required: true
     default: 'main.ipynb'
+
 outputs:
   size:
     description: 'The number of total cells'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.notebook }}
+  using: 'composite'
+
+  steps:
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10.7'
+    - name: checkout repo
+      uses: actions/checkout@v3
+    - name: Install Dependencies and run skim
+      id: skim
+      run: |
+        pip install -r requirements.txt
+        python skim.py ${{ inputs.notebook }}
+      shell: bash
+    - name: Display basic stats
+      run: echo "number of cells ${{ steps.skim.outputs.size }}"
+    - name: commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        file_pattern: '*.ipynb'
