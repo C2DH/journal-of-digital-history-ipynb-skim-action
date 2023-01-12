@@ -28,7 +28,9 @@ runs:
         python skim.py ${{ inputs.notebook }}
       shell: bash
     - name: Display basic stats
-      run: echo "number of cells ${{ steps.skim.outputs.size }}"
+      run: |
+        echo "number of cells ${{ steps.skim.outputs.size }}"
+        echo "size=${{ steps.skim.outputs.size }}" >> $GITHUB_OUTPUT
       shell: bash
     - name: commit changes
       uses: stefanzweifel/git-auto-commit-action@v4
