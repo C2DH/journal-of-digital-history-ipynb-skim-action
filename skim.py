@@ -8,6 +8,18 @@ def save_notebook(data, file_name):
         json.dump(data, f)
 
 
+def set_action_output(output_name, value) :
+    """Sets the GitHub Action output.
+
+    Keyword arguments:
+    output_name - The name of the output
+    value - The value of the output
+    """
+    if "GITHUB_OUTPUT" in os.environ :
+        with open(os.environ["GITHUB_OUTPUT"], "a") as f :
+            print("{0}={1}".format(output_name, value), file=f)
+
+
 def main(notebook=None):
     if notebook is None:
       print('::error::No path provided')
@@ -29,13 +41,13 @@ def main(notebook=None):
         tags = cell.get('metadata', {}).get('tags', [])
         if 'test' not in tags:
           tags.append('test')
-
         cell['metadata'].update({
           'tags': tags,
         })
       data.update({ 'cells': cells })
       print(f"::debug::num of cells: {len(cells)}")
-      print(f"::set-output name=size::{30}")
+      # print(f"::set-output name=size::{30}")
+      set_action_output('size', len(cells))
       save_notebook(data, skim_filepath)
 
 if __name__ == "__main__":
