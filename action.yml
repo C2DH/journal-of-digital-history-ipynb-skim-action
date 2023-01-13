@@ -11,6 +11,11 @@ inputs:
 outputs:
   size:
     description: 'The number of total cells'
+    value: ${{ steps.skim.outputs.size }}
+  skimmed:
+    description: 'The number of cells modified by this skim action'
+    value: ${{ steps.skim.outputs.skimmed }}
+
 runs:
   using: 'composite'
 
@@ -30,7 +35,7 @@ runs:
     - name: Display basic stats
       run: |
         echo "number of cells ${{ steps.skim.outputs.size }}"
-        echo "size=${{ steps.skim.outputs.size }}" >> $GITHUB_OUTPUT
+        echo "skimmed ${{ steps.skim.outputs.skimmed }}"
       shell: bash
     - name: commit changes
       uses: stefanzweifel/git-auto-commit-action@v4
