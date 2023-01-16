@@ -9,7 +9,7 @@ jobs:
         id: hello
         uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
         with:
-          notebook: 'example/display-image.ipynb'
+          notebook: 'example/example-article.ipynb'
       # Use the output from the `hello` step
       - name: Use the output
         run: echo "number of cells ${{ steps.hello.outputs.size }}"
