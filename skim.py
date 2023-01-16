@@ -6,6 +6,18 @@ import base64
 import io
 from PIL import Image
 
+def get_image_thumbnail(base64_image, width=200, height=200):
+    # Decode the base64 image to binary
+    image_data = base64.b64decode(base64_image)
+    # Open the image using PIL
+    image = Image.open(io.BytesIO(image_data))
+    # Resize the image
+    image.thumbnail((width, height))
+    # Save the image to a BytesIO object
+    imgByteArr = io.BytesIO()
+    image.save(imgByteArr, format=image.format)
+    # Encode the BytesIO object to base64
+    return base64.b64encode(imgByteArr.getvalue()).decode("utf-8")
 
 def save_notebook(data, file_name):
     # Serializing json
@@ -62,6 +74,16 @@ def skim_cell_images(cell):
         print(f"::debug::cell already has aspect-ratio tag! no need to skim")
         return (cell, False)
 
+    # check if cell has tags h-<N>px
+    if any("h-" in tag for tag in tags):
+        print(f"::debug::cell already has h- tag! no need to skim")
+        return (cell, False)
+
+    # check if cell has tags w-<N>px
+    if any("w-" in tag for tag in tags):
+        print(f"::debug::cell already has w- tag! no need to skim")
+        return (cell, False)
+
     # check if cell output contains an image
     outputs = cell.get("outputs", [])
     if not any(output.get("output_type") == "display_data" for output in outputs):
@@ -90,8 +112,12 @@ def skim_cell_images(cell):
 
     (width, height) = get_image_size(base64_image)
     aspect_ratio_tag = f"aspect-ratio-{width}-{height}"
-    print(f"::debug::adding aspect-ratio tag {aspect_ratio_tag}")
+    height_tag =f"h-{height}px"
+    widht_tag =f"h-{width}px"
+    print(f"::debug::adding aspect-ratio tag {aspect_ratio_tag} - {height_tag} - {widht_tag}")
     tags.append(aspect_ratio_tag)
+    tags.append(height_tag)
+    tags.append(widht_tag)
     # update cell metadata
     cell["metadata"].update(
         {
