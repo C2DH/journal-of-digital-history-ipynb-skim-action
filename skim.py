@@ -115,7 +115,7 @@ def skim_cell_images(cell):
     height_tag =f"h-{height}px"
     widht_tag =f"w-{width}px"
     print(f"::debug::adding aspect-ratio tag {aspect_ratio_tag} - {height_tag} - {widht_tag}")
-    tags.append(aspect_ratio_tag)
+    #tags.append(aspect_ratio_tag)
     tags.append(height_tag)
     tags.append(widht_tag)
     # update cell metadata
