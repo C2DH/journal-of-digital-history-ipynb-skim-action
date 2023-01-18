@@ -1,9 +1,9 @@
 on: [workflow_dispatch]
-
+name: GitHub Actions Ipynb for publishing
 jobs:
-  hello_world_job:
+  Ipynb_for_publishing:
     runs-on: ubuntu-latest
-    name: Test this action
+    name: Ipynb for publishing
     steps:
       - name: Skim example file
         id: hello
