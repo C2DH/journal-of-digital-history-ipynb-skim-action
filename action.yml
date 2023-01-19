@@ -27,8 +27,8 @@ runs:
     - name: Install Dependencies and run skim
       id: skim
       run: |
-        pip install -r requirements.txt
-        python skim.py ${{ inputs.notebook }}
+        pip install -r ${{ github.action_path }}/requirements.txt
+        python ${{ github.action_path }}/skim.py ${{ inputs.notebook }}
       shell: bash
     - name: Display basic stats
       run: |
