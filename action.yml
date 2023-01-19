@@ -24,8 +24,6 @@ runs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10.7'
-    - name: checkout repo
-      uses: actions/checkout@v3
     - name: Install Dependencies and run skim
       id: skim
       run: |
@@ -37,7 +35,3 @@ runs:
         echo "number of cells ${{ steps.skim.outputs.size }}"
         echo "skimmed ${{ steps.skim.outputs.skimmed }}"
       shell: bash
-    - name: commit changes
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        file_pattern: '*.ipynb'

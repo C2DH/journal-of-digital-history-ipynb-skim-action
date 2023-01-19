@@ -12,14 +12,7 @@ Given a input `notebook` ipynb file present in the repository, this action provi
 
 ## Basic usage
 
-```yaml
-- name: Skim a ipynb file
-  uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
-  with:
-    notebook: 'example/display-image.ipynb'
-```
-
-See [action.yml](action.yml) and our [example.yml](.github/workflows/example.yml) workflow.
+See [action.yml](action.yml) and our [example](.github/workflows/github-actions-publishing.yml) workflow.
 As this action commmits and pushes to the repository, use appropriate github action events, like `workflow_dispatch`.
 
 ```yaml
@@ -30,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Test this action
     steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
       - name: Skim example file
         id: skim
         uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
@@ -37,4 +32,8 @@ jobs:
           notebook: 'example/display-image.ipynb'
       - name: Use the output, if needed
         run: echo "number of cells ${{ steps.skim.outputs.size }}"
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: '*.ipynb'
 ```

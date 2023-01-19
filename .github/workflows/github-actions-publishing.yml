@@ -1,10 +1,13 @@
 on: [workflow_dispatch]
+
 name: GitHub Actions Ipynb for publishing
 jobs:
-  Ipynb_for_publishing:
+  ipynb_for_publishing:
     runs-on: ubuntu-latest
     name: Ipynb for publishing
     steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
       - name: Skim example file
         id: hello
         uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
@@ -13,3 +16,7 @@ jobs:
       # Use the output from the `hello` step
       - name: Use the output
         run: echo "number of cells ${{ steps.hello.outputs.size }}"
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: '*.ipynb'
