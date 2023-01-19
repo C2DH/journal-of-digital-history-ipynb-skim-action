@@ -9,13 +9,13 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v3
       - name: Skim example file
-        id: hello
+        id: skim
         uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
         with:
           notebook: 'example/example_article.ipynb'
       # Use the output from the `hello` step
       - name: Use the output
-        run: echo "number of cells ${{ steps.hello.outputs.size }}"
+        run: echo "number of cells ${{ steps.skim.outputs.size }} - output ${{ steps.skim.outputs.outputNotebook }}"
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

@@ -6,6 +6,7 @@ import base64
 import io
 from PIL import Image
 
+
 def get_image_thumbnail(base64_image, width=200, height=200):
     # Decode the base64 image to binary
     image_data = base64.b64decode(base64_image)
@@ -18,6 +19,7 @@ def get_image_thumbnail(base64_image, width=200, height=200):
     image.save(imgByteArr, format=image.format)
     # Encode the BytesIO object to base64
     return base64.b64encode(imgByteArr.getvalue()).decode("utf-8")
+
 
 def save_notebook(data, file_name):
     # Serializing json
@@ -112,9 +114,11 @@ def skim_cell_images(cell):
 
     (width, height) = get_image_size(base64_image)
     aspect_ratio_tag = f"aspect-ratio-{width}-{height}"
-    height_tag =f"h-{height}px"
-    widht_tag =f"w-{width}px"
-    print(f"::debug::adding aspect-ratio tag {aspect_ratio_tag} - {height_tag} - {widht_tag}")
+    height_tag = f"h-{height}px"
+    widht_tag = f"w-{width}px"
+    print(
+        f"::debug::adding aspect-ratio tag {aspect_ratio_tag} - {height_tag} - {widht_tag}"
+    )
     tags.append(aspect_ratio_tag)
     tags.append(height_tag)
     tags.append(widht_tag)
@@ -127,16 +131,19 @@ def skim_cell_images(cell):
     return (cell, True)
 
 
-def main(notebook=None):
+def main(notebook=None, outputNotebook=None):
     if notebook is None:
         print("::error::No path provided")
         sys.exit(1)
     workspace = os.getenv("GITHUB_WORKSPACE", "")
     notebook_filepath = os.path.join(workspace, notebook)
     notebook_filename = os.path.basename(notebook_filepath)
-    skim_filepath = os.path.join(
-        os.path.dirname(notebook_filepath), f"skim.{notebook_filename}"
-    )
+    if outputNotebook is None:
+        skim_filepath = os.path.join(
+            os.path.dirname(notebook_filepath), f"skim-{notebook_filename}"
+        )
+    else:
+        skim_filepath = os.path.join(workspace, outputNotebook)
     if not os.path.exists(notebook_filepath):
         print(f"::error::Path {notebook_filepath} does not exist")
         sys.exit(1)
@@ -160,7 +167,9 @@ def main(notebook=None):
         data.update({"cells": cells})
         print(f"::debug::Total num of cells: size={size}")
         print(f"::debug::Total num of skimmed: skimmed={num_skimmed}")
-        set_action_outputs({"size": size, "skimmed": num_skimmed})
+        set_action_outputs(
+            {"size": size, "skimmed": num_skimmed, "outputNotebook": skim_filepath}
+        )
         save_notebook(data, skim_filepath)
 
 
