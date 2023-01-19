@@ -13,6 +13,7 @@ jobs:
         uses: c2dh/journal-of-digital-history-ipynb-skim-action@master
         with:
           notebook: 'example/example_article.ipynb'
+          output_notebook: 'example/example_article_awesome.ipynb'
       # Use the output from the `hello` step
       - name: Use the output
         run: echo "number of cells ${{ steps.skim.outputs.size }} - output ${{ steps.skim.outputs.outputNotebook }}"

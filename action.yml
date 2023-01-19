@@ -7,7 +7,7 @@ inputs:
     description: 'relative path of your notebook ipynb file'
     required: true
     default: 'main.ipynb'
-  outputNotebook:
+  output_notebook:
     required: false
     description: 'relative path where the skimmed notebook will be saved'
 
@@ -18,8 +18,8 @@ outputs:
   skimmed:
     description: 'The number of cells modified by this skim action'
     value: ${{ steps.skim.outputs.skimmed }}
-  outputNotebook:
-    value: ${{ steps.skim.outputs.outputNotebook }}
+  output_notebook:
+    value: ${{ steps.skim.outputs.output_notebook }}
 
 runs:
   using: 'composite'
@@ -33,7 +33,7 @@ runs:
       id: skim
       run: |
         pip install -r ${{ github.action_path }}/requirements.txt
-        python ${{ github.action_path }}/skim.py ${{ inputs.notebook }} ${{ input.outputNotebook }}
+        python ${{ github.action_path }}/skim.py ${{ inputs.notebook }} ${{ inputs.output_notebook }}
       shell: bash
     - name: Display basic stats
       run: |

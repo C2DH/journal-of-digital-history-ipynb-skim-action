@@ -131,19 +131,19 @@ def skim_cell_images(cell):
     return (cell, True)
 
 
-def main(notebook=None, outputNotebook=None):
+def main(notebook=None, output_notebook=None):
     if notebook is None:
         print("::error::No path provided")
         sys.exit(1)
     workspace = os.getenv("GITHUB_WORKSPACE", "")
     notebook_filepath = os.path.join(workspace, notebook)
     notebook_filename = os.path.basename(notebook_filepath)
-    if outputNotebook is None:
+    if output_notebook is None:
         skim_filepath = os.path.join(
             os.path.dirname(notebook_filepath), f"skim-{notebook_filename}"
         )
     else:
-        skim_filepath = os.path.join(workspace, outputNotebook)
+        skim_filepath = os.path.join(workspace, output_notebook)
     if not os.path.exists(notebook_filepath):
         print(f"::error::Path {notebook_filepath} does not exist")
         sys.exit(1)
@@ -168,7 +168,7 @@ def main(notebook=None, outputNotebook=None):
         print(f"::debug::Total num of cells: size={size}")
         print(f"::debug::Total num of skimmed: skimmed={num_skimmed}")
         set_action_outputs(
-            {"size": size, "skimmed": num_skimmed, "outputNotebook": skim_filepath}
+            {"size": size, "skimmed": num_skimmed, "output_notebook": skim_filepath}
         )
         save_notebook(data, skim_filepath)
 
